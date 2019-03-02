@@ -1,0 +1,16 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: collector-deployment
+spec:
+  replicas: 1 
+  template: 
+    metadata:
+      labels:
+        app: collectorapp
+    spec:
+      containers:
+      - name: login-collector
+        image: asksven/logincollector:5
+        ports:
+        - containerPort: 8080
