@@ -1,6 +1,6 @@
 # ssh login-attempt monitoring
 
-This repo is based on this create article called (Geolocating SSH Hackers In Real-Time)[https://medium.com/schkn/geolocating-ssh-hackers-in-real-time-108cbc3b5665], and goes in a little more details in setting-up the environment.
+This repo is based on this create article called [Geolocating SSH Hackers In Real-Time](https://medium.com/schkn/geolocating-ssh-hackers-in-real-time-108cbc3b5665), and goes in a little more details in setting-up the environment.
 I will be using kubernetes to run the following pieces:
 - infludb: the time series database
 - grafana: for visualizing the login attempts on a map
@@ -64,7 +64,7 @@ To create the ingress using Traefik:
 
 ### 2.2. Add Worldmap Panel
 
-Next we will add the (Worldmap panel)[https://grafana.com/plugins/grafana-worldmap-panel/installation] to grafana.
+Next we will add the [Worldmap panel](https://grafana.com/plugins/grafana-worldmap-panel/installation) to grafana.
 
 1. connect to the grafana pod: `kubectl -n grafana exec -it $(kubectl get pods --namespace grafana -l app=grafana -o jsonpath='{.items[0].metadata.name}') /bin/bash`
 1. Install the panel: `grafana-cli plugins install grafana-worldmap-panel`
