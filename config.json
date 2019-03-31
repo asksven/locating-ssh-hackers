@@ -1,5 +1,4 @@
 {
     "influxHost": "influxdb-influxdb.influxdb",
-    "influxDatabase": "login-attempts",
-    "apikey": "<your-api-key-goes-here>"
-}
+    "influxDatabase": "login-attempts"
+    }

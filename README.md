@@ -83,12 +83,14 @@ Next we will add the [Worldmap panel](https://grafana.com/plugins/grafana-worldm
 
 ## 3. Deploying the log receiver
 
-### 3.1. Create an ipstack.com account
+### ~~3.1. Create an ipstack.com account~~
 
-The tcp listener uses ipstack.com to resolve IPs to geohashes. 
+~~The tcp listener uses ipstack.com to resolve IPs to geohashes.~~ 
 
-1. Register a free account at `ipstack.com`
-1. Grab your API key and add it to `config.json`
+~~1. Register a free account at `ipstack.com`~~
+~~1. Grab your API key and add it to `config.json`~~
+
+**Update 2019-03-31: I reached ipstack.com's quota of free api-calls far too soon so I moved to the free (for non commercial use) ip-api.com. 
 
 ### 3.2. Build and deploy
 The log receiver is a tcp socket listener written in nodejs that will get called from `rsyslogd`.

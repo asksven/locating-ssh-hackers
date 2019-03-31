@@ -3,7 +3,9 @@ const config = require("./config.json");
 const axios = require("axios");
 const Influx = require("influx");
 
-console.log("Config: " + JSON.stringify(config));
+console.log("config: " + JSON.stringify(config));
+console.log("config.influxHost=" + config.influxHost);
+console.log("config.influxDatabase=" + config.influxDatabase);
 
 // TCP handles
 const net = require('net');
@@ -21,8 +23,6 @@ const influx = new Influx.InfluxDB({
     database: config.influxDatabase
 });
 
-console.log("InfluxDB: host=" + influx.host + ", database=" + influx.database);
-
 let sockets = [];
 
 
@@ -36,10 +36,10 @@ server.on('connection', function(sock) {
             let message = JSON.parse("" + data)
             // API Initialization.
             const instance = axios.create({
-                baseURL: "http://api.ipstack.com"
+                baseURL: "http://ip-api.com"
             });
             instance
-                .get(`/${message.ip}?access_key=${config.apikey}`)
+                .get(`/${message.ip}`)
                 .then(function(response) {
                     const apiResponse = response.data;
                     influx.writePoints(
@@ -49,7 +49,7 @@ server.on('connection', function(sock) {
                                 value: 1
                             },
                             tags: {
-                                geohash: geohash.encode(apiResponse.latitude, apiResponse.longitude),
+                                geohash: geohash.encode(apiResponse.lat, apiResponse.lon),
                                 username: message.username,
                                 port: message.port,
                                 ip: message.ip

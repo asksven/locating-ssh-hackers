@@ -11,6 +11,6 @@ spec:
     spec:
       containers:
       - name: login-collector
-        image: asksven/logincollector:5
+        image: asksven/logincollector:8
         ports:
         - containerPort: 8080
