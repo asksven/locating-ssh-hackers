@@ -36,12 +36,18 @@ server.on('connection', function(sock) {
             let message = JSON.parse("" + data)
             // API Initialization.
             const instance = axios.create({
-                baseURL: "http://ip-api.com"
+                baseURL: "http://ip-api.com/json"
             });
             instance
-                .get(`/${message.ip}`)
+                .get(`/${message.ip}?fields=status,lat,lon`)
                 .then(function(response) {
                     const apiResponse = response.data;
+                    console.log("ip-api.com response: ");
+                    console.log("  status: " + apiResponse.status);
+                    console.log("  lat   : " + apiResponse.lat);
+                    console.log("  lon   : " + apiResponse.lon);
+                    console.log("geohash: "+ geohash.encode(apiResponse.lat, apiResponse.lon));
+
                     influx.writePoints(
                         [{
                             measurement: "geossh",
