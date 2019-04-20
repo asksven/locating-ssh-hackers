@@ -3,6 +3,32 @@ const config = require("./config.json");
 const axios = require("axios");
 const Influx = require("influx");
 
+// our metrics
+const metricPort = 3001;
+const express = require('express')
+const app = express()
+
+const Prometheus = require('prom-client')
+
+const apiCallsTotal = new Prometheus.Counter({
+    name: 'api_calls_total',
+    help: 'Total number of geo-ip calls',
+    labelNames: ['status']
+});
+
+const apiRequestDurationMicroseconds = new Prometheus.Histogram({
+    name: 'api_request_duration_ms',
+    help: 'Duration of api requests in ms',
+    labelNames: ['response_time'],
+    buckets: [0.10, 5, 15, 50, 100, 200, 300, 400, 500]  // buckets for response time from 0.1ms to 500ms
+})
+
+  
+app.get('/metrics', (req, res) => {
+    res.set('Content-Type', Prometheus.register.contentType)
+    res.end(Prometheus.register.metrics())
+})
+
 console.log("config: " + JSON.stringify(config));
 console.log("config.influxHost=" + config.influxHost);
 console.log("config.influxDatabase=" + config.influxDatabase);
@@ -17,6 +43,24 @@ server.listen(port, host, () => {
     console.log('TCP Server is running on port ' + port + '.');
 });
 
+// // Runs before each requests
+// server.use((req, res, next) => {
+//     res.locals.startEpoch = Date.now()
+//     next()
+// })
+
+// // Runs after each requests
+// server.use((req, res, next) => {
+//     const responseTimeInMs = Date.now() - res.locals.startEpoch
+
+//     requestDurationMicroseconds
+//         .labels('response_time')
+//         .observe(responseTimeInMs)
+
+//     next()
+// })  
+
+
 // InfluxDB Initialization.
 const influx = new Influx.InfluxDB({
     host: config.influxHost,
@@ -25,6 +69,9 @@ const influx = new Influx.InfluxDB({
 
 let sockets = [];
 
+const metricsServer = app.listen(metricPort, () => {
+    console.log(`Metrics app listening on port ${metricPort}!`)
+  })
 
 server.on('connection', function(sock) {
     console.log('CONNECTED: ' + sock.remoteAddress + ':' + sock.remotePort);
@@ -44,6 +91,12 @@ server.on('connection', function(sock) {
                     const apiResponse = response.data;
                     console.log("ip-api.com response: ");
                     console.log("  status: " + apiResponse.status);
+
+                    const success = apiResponse.status === 'success' ? 'success' : 'failure';
+                    apiCallsTotal.inc({
+                        status: success
+                      })
+                    
                     console.log("  lat   : " + apiResponse.lat);
                     console.log("  lon   : " + apiResponse.lon);
                     console.log("geohash: "+ geohash.encode(apiResponse.lat, apiResponse.lon));

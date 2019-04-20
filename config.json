@@ -1,4 +1,4 @@
 {
-    "influxHost": "influxdb-influxdb.influxdb",
+    "influxHost": "influxdb.influxdb",
     "influxDatabase": "login-attempts"
     }

@@ -8,12 +8,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node app.js"
   },
-  "author": "",
+  "author": "Sven Knispel (sven.knispel@gmail.com)",
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "express": "^4.16.4",
     "influx": "^5.0.7",
     "influxdb": "0.0.1",
-    "ngeohash": "^0.6.3"
+    "ngeohash": "^0.6.3",
+    "prom-client": "^11.2.1"
   }
 }
