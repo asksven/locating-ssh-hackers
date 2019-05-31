@@ -11,7 +11,7 @@
   "author": "Sven Knispel (sven.knispel@gmail.com)",
   "license": "ISC",
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.19.0",
     "express": "^4.16.4",
     "influx": "^5.0.7",
     "influxdb": "0.0.1",
