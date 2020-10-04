@@ -1,16 +1,30 @@
-apiVersion: apps/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
+  creationTimestamp: null
+  labels:
+    app: collectorapp
   name: collector-deployment
 spec:
-  replicas: 1 
-  template: 
+  replicas: 1
+  selector:
+    matchLabels:
+      app: collectorapp
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
     metadata:
       labels:
         app: collectorapp
     spec:
       containers:
-      - name: login-collector
-        image: asksven/logincollector:13
+      - image: asksven/logincollector:13
+        imagePullPolicy: IfNotPresent
+        name: login-collector
         ports:
         - containerPort: 8080
+          protocol: TCP
+      restartPolicy: Always
