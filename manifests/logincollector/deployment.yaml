@@ -21,7 +21,7 @@ spec:
         app: collectorapp
     spec:
       containers:
-      - image: asksven/logincollector:13
+      - image: asksven/logincollector:14
         imagePullPolicy: IfNotPresent
         name: login-collector
         ports:
