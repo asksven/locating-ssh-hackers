@@ -1,0 +1,4 @@
+requests
+flask
+geoip2
+influxdb-client
